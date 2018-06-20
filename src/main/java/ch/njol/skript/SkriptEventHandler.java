@@ -111,10 +111,12 @@ public abstract class SkriptEventHandler {
 	};
 	
 	static void check(final Event e) {
+		if (true) return;
+
 		Iterator<Trigger> ts = getTriggers(e.getClass());
 		if (!ts.hasNext())
 			return;
-		
+
 		if (Skript.logVeryHigh()) {
 			boolean hasTrigger = false;
 			while (ts.hasNext()) {
@@ -128,10 +130,10 @@ public abstract class SkriptEventHandler {
 			final Class<? extends Event> c = e.getClass();
 			assert c != null;
 			ts = getTriggers(c);
-			
+
 			logEventStart(e);
 		}
-		
+
 		if (e instanceof Cancellable && ((Cancellable) e).isCancelled() && !listenCancelled.contains(e.getClass()) &&
 				!(e instanceof PlayerInteractEvent && (((PlayerInteractEvent) e).getAction() == Action.LEFT_CLICK_AIR || ((PlayerInteractEvent) e).getAction() == Action.RIGHT_CLICK_AIR) && ((PlayerInteractEvent) e).useItemInHand() != Result.DENY)
 				|| e instanceof ServerCommandEvent && (((ServerCommandEvent) e).getCommand() == null || ((ServerCommandEvent) e).getCommand().isEmpty())) {
@@ -139,21 +141,21 @@ public abstract class SkriptEventHandler {
 				Skript.info(" -x- was cancelled");
 			return;
 		}
-		
+
 		while (ts.hasNext()) {
 			final Trigger t = ts.next();
 			if (!t.getEvent().check(e))
 				continue;
-			
+
 			logTriggerStart(t);
 			Object timing = SkriptTimings.start(t.getDebugLabel());
-			
+
 			t.execute(e);
-			
+
 			SkriptTimings.stop(timing);
 			logTriggerEnd(t);
 		}
-		
+
 		logEventEnd();
 	}
 	
