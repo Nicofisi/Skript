@@ -150,7 +150,7 @@ public class ExprEnchantments extends SimpleExpression<EnchantmentType> {
 
 	@Override
 	public String toString(@Nullable Event e, boolean debug) {
-		return String.format("the enchantments of %s", items.toString(e, debug));
+		return "" + String.format("the enchantments of %s", items.toString(e, debug));
 	}
 
 	private static void changeEnchantments(Consumer<ItemType> consumer, ItemType... items) {
