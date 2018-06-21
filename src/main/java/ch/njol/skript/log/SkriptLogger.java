@@ -172,7 +172,7 @@ public abstract class SkriptLogger {
 
 	private static ArrayList<LogListener> logListeners = new ArrayList<>();
 
-	public void addLogListener(@NonNull LogListener listener) {
+	public static void addLogListener(@NonNull LogListener listener) {
 		logListeners.add(listener);
 	}
 	
