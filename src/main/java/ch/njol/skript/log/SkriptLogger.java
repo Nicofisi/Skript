@@ -19,11 +19,13 @@
  */
 package ch.njol.skript.log;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
 import ch.njol.skript.Skript;
@@ -163,8 +165,20 @@ public abstract class SkriptLogger {
 	public static void log(final Level level, final String message) {
 		log(new LogEntry(level, message, node));
 	}
+
+	public interface LogListener {
+		void onLog(@Nullable LogEntry entry);
+	}
+
+	private static ArrayList<LogListener> logListeners = new ArrayList<>();
+
+	public void addLogListener(@NonNull LogListener listener) {
+		logListeners.add(listener);
+	}
 	
 	public static void log(final @Nullable LogEntry entry) {
+		logListeners.forEach(listener -> listener.onLog(entry));
+
 		if (entry == null)
 			return;
 		if (Skript.testing() && node != null && node.debug())
