@@ -1468,6 +1468,7 @@ public final class Skript extends JavaPlugin implements Listener {
 //	}
 	
 	public static void info(final CommandSender sender, final String info) {
+		SkriptLogger.logListeners.forEach(listener -> listener.onInfo(sender, info));
 		sender.sendMessage(SKRIPT_PREFIX + Utils.replaceEnglishChatStyles(info));
 	}
 	

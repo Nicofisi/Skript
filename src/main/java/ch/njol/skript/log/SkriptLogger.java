@@ -25,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.eclipse.jdt.annotation.NonNull;
 import org.eclipse.jdt.annotation.Nullable;
 
@@ -168,9 +169,11 @@ public abstract class SkriptLogger {
 
 	public interface LogListener {
 		void onLog(@Nullable LogEntry entry);
+
+		void onInfo(CommandSender sender, String info);
 	}
 
-	private static ArrayList<LogListener> logListeners = new ArrayList<>();
+	public static ArrayList<LogListener> logListeners = new ArrayList<>();
 
 	public static void addLogListener(@NonNull LogListener listener) {
 		logListeners.add(listener);
