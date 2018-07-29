@@ -104,9 +104,11 @@ public class HTMLGenerator {
 				throw new NullPointerException();
 			}
 			
-			if (o1.c.getAnnotation(NoDoc.class) != null)
+			if (o1.c.getAnnotation(NoDoc.class) != null) {
+				if (o2.c.getAnnotation(NoDoc.class) != null)
+					return 0;
 				return 1;
-			else if (o2.c.getAnnotation(NoDoc.class) != null)
+			} else if (o2.c.getAnnotation(NoDoc.class) != null)
 				return -1;
 			
 			Name name1 = o1.c.getAnnotation(Name.class);
