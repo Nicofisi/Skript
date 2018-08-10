@@ -33,7 +33,9 @@ public interface ChatCode {
 	 * @param param String parameter. May be empty string.
 	 */
 	void updateComponent(MessageComponent component, String param);
-	
+
+	StringBuilder transformText(StringBuilder currentText);
+
 	/**
 	 * Checks if this chat code takes a string parameter. If yes, scripters
 	 * will use it like:

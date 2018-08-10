@@ -94,6 +94,13 @@ public enum SkriptChatCode implements ChatCode {
 			component.obfuscated = true;
 		}
 	},
+
+	new_line(false) {
+		@Override
+		public StringBuilder transformText(StringBuilder currentText) {
+			return currentText.append("\n");
+		}
+	},
 	
 	// clickEvent
 	
@@ -145,7 +152,9 @@ public enum SkriptChatCode implements ChatCode {
 
     insertion(true) {
 	    @Override
-        public void updateComponent(MessageComponent component, String param) { component.insertion = param; }
+        public void updateComponent(MessageComponent component, String param) {
+	    	component.insertion = param;
+	    }
     };
 	
 	private boolean hasParam;
@@ -217,5 +226,11 @@ public enum SkriptChatCode implements ChatCode {
 	@Override
 	public void updateComponent(MessageComponent component, String param) {
 		// Default: do nothing
+	}
+
+	@Override
+	public StringBuilder transformText(StringBuilder currentText) {
+		// Default: do nothing
+		return currentText;
 	}
 }

@@ -21,42 +21,27 @@
 
 package ch.njol.skript.util.chat;
 
-import java.io.NotSerializableException;
-import java.io.StreamCorruptedException;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.regex.Pattern;
 
-import org.bukkit.event.Event;
-import org.eclipse.jdt.annotation.NonNull;
+import org.bukkit.Bukkit;
 import org.eclipse.jdt.annotation.Nullable;
 
-import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import ch.njol.skript.Skript;
 import ch.njol.skript.SkriptAddon;
-import ch.njol.skript.classes.ClassInfo;
-import ch.njol.skript.classes.Converter;
-import ch.njol.skript.classes.Serializer;
-import ch.njol.skript.lang.Debuggable;
-import ch.njol.skript.lang.VariableString;
 import ch.njol.skript.localization.Language;
 import ch.njol.skript.localization.LanguageChangeListener;
-import ch.njol.skript.localization.Message;
-import ch.njol.skript.registrations.Classes;
-import ch.njol.skript.registrations.Converters;
 import ch.njol.skript.util.Color;
-import ch.njol.yggdrasil.Fields;
 
 /**
  * Handles parsing chat messages.
@@ -260,6 +245,7 @@ public class ChatMessages {
 						} else {
 							assert param != null;
 							code.updateComponent(current, param); // Call SkriptChatCode update
+							curStr = code.transformText(curStr);
 						}
 						
 						// Copy styles from old to current if needed
@@ -378,7 +364,7 @@ public class ChatMessages {
 					current.text = link; // ... and for player
 					
 					i += link.length() - 1; // Skip link for all other parsing
-					
+
 					// Add one MORE component (this comes after the link)
 					current = new MessageComponent();
 					components.add(current);

@@ -491,6 +491,7 @@ chat styles:
 	change_page: change page
 	show_text: tooltip, show text, ttp
 	insertion: insertion, insert, ins
+	new_line: new line, nl
 
 # -- Directions --
 directions:
