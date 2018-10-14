@@ -38,7 +38,7 @@ import ch.njol.util.coll.iterator.EnumerationIterable;
 
 /**
  * Utility class for Skript addons. Use {@link Skript#registerAddon(JavaPlugin)} to create a SkriptAddon instance for your plugin.
- * 
+ *
  * @author Peter Güttinger
  */
 public final class SkriptAddon {
@@ -49,7 +49,7 @@ public final class SkriptAddon {
 	
 	/**
 	 * Package-private constructor. Use {@link Skript#registerAddon(JavaPlugin)} to get a SkriptAddon for your plugin.
-	 * 
+	 *
 	 * @param p
 	 */
 	SkriptAddon(final JavaPlugin p) {
@@ -79,7 +79,7 @@ public final class SkriptAddon {
 	
 	/**
 	 * Loads classes of the plugin by package. Useful for registering many syntax elements like Skript does it.
-	 * 
+	 *
 	 * @param basePackage The base package to add to all sub packages, e.g. <tt>"ch.njol.skript"</tt>.
 	 * @param subPackages Which subpackages of the base package should be loaded, e.g. <tt>"expressions", "conditions", "effects"</tt>. Subpackages of these packages will be loaded
 	 *            as well. Use an empty array to load all subpackages of the base package.
@@ -88,11 +88,13 @@ public final class SkriptAddon {
 	 */
 	public SkriptAddon loadClasses(String basePackage, final String... subPackages) throws IOException {
 		assert subPackages != null;
-		final JarFile jar = new JarFile(getFile());
-		for (int i = 0; i < subPackages.length; i++)
-			subPackages[i] = subPackages[i].replace('.', '/') + "/";
-		basePackage = basePackage.replace('.', '/') + "/";
-		try {
+		File file = getFile();
+		if (file == null)
+			return this;
+		try (JarFile jar = new JarFile(file)) {
+			for (int i = 0; i < subPackages.length; i++)
+				subPackages[i] = subPackages[i].replace('.', '/') + "/";
+			basePackage = basePackage.replace('.', '/') + "/";
 			for (final JarEntry e : new EnumerationIterable<>(jar.entries())) {
 				if (e.getName().startsWith(basePackage) && e.getName().endsWith(".class")) {
 					boolean load = subPackages.length == 0;
@@ -110,15 +112,14 @@ public final class SkriptAddon {
 							Skript.exception(ex, "Cannot load class " + c + " from " + this);
 						} catch (final ExceptionInInitializerError err) {
 							Skript.exception(err.getCause(), this + "'s class " + c + " generated an exception while loading");
+						} catch (NoClassDefFoundError err) {
+							Skript.exception(err, this + "'s class " + c + " couldn't be loaded since it references a class that is missing");
+						} catch (final Throwable t) {
+							Skript.exception(t, t.getClass().getName() + " has been thrown while trying to load the class " + c + " from " + this);
 						}
-						continue;
 					}
 				}
 			}
-		} finally {
-			try {
-				jar.close();
-			} catch (final IOException e) {}
 		}
 		return this;
 	}
@@ -129,7 +130,7 @@ public final class SkriptAddon {
 	/**
 	 * Makes Skript load language files from the specified directory, e.g. "lang" or "skript lang" if you have a lang folder yourself. Localised files will be read from the
 	 * plugin's jar and the plugin's data folder, but the default English file is only taken from the jar and <b>must</b> exist!
-	 * 
+	 *
 	 * @param directory Directory name
 	 * @return This SkriptAddon
 	 */
@@ -153,7 +154,7 @@ public final class SkriptAddon {
 	private File file = null;
 	
 	/**
-	 * @return The jar file of the plugin. The first invocation of this method uses reflection to invoke the protected method {@link JavaPlugin#getFile()} to get the plugin's jar
+	 * @return The jar file of the plugin. The first invocation of this method uses reflection to invoke the protected method JavaPlugin#getFile() to get the plugin's jar
 	 *         file. The file is then cached and returned upon subsequent calls to this method to reduce usage of reflection.
 	 */
 	@Nullable
@@ -165,9 +166,7 @@ public final class SkriptAddon {
 			getFile.setAccessible(true);
 			file = (File) getFile.invoke(plugin);
 			return file;
-		} catch (final NoSuchMethodException e) {
-			Skript.outdatedError(e);
-		} catch (final IllegalArgumentException e) {
+		} catch (final NoSuchMethodException | IllegalArgumentException e) {
 			Skript.outdatedError(e);
 		} catch (final IllegalAccessException e) {
 			assert false;
