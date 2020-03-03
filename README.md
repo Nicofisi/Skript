@@ -4,7 +4,7 @@ to modify their servers without learning Java. It can also be useful if you
 *do* know Java; some tasks are quicker to do with Skript, and so it can be used
 for prototyping etc.
 
-This Github fork of Skript is based on Mirreski's improvements which was built
+This GitHub fork of Skript is based on Mirreski's improvements which was built
 on Njol's original Skript.
 
 ## Requirements

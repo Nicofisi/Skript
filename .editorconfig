@@ -1,4 +1,4 @@
-# Helps Github UI and some editors to work with Skript code
+# Helps GitHub UI and some editors to work with Skript code
 # Note: Eclipse reads its own config, not this file
 root = true
 

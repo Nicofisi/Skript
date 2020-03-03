@@ -120,7 +120,7 @@ Your comments should look something like these:
 
 ## Nullness
 * All fields, method parameters and their return values are non-null by default
-  - Exceptions: Github API JSON mappings, Metrics
+  - Exceptions: GitHub API JSON mappings, Metrics
 * When something is nullable, mark it as so
 * Only ignore nullness errors when a variable is effectively non-null, but compiler doesn't recognize it
   - Most common example is syntax elements, which are not initialized using a constructor

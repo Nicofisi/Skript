@@ -12,6 +12,6 @@ wants a Discord account. We may add other channels for private reports in
 future.
 
 ## Team guidelines
-Everyone with push access must use two-factor authentication for their Github
+Everyone with push access must use two-factor authentication for their GitHub
 accounts. Should their account still be compromised, other team members should
 be immediately notified via Discord.
