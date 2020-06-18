@@ -46,7 +46,7 @@ repositories {
 
 dependencies {
 	implementation 'com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT'
-	implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:1.1.0'
+	implementation 'org.eclipse.jdt:org.eclipse.jdt.annotation:2.2.600'
 	implementation 'com.google.code.findbugs:findbugs:3.0.1'
 	implementation 'com.sk89q.worldguard:worldguard-legacy:7.0.0-SNAPSHOT'
 	implementation 'net.milkbowl.vault:Vault:1.7.1'
